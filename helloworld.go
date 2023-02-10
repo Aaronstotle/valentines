@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"fyne.io/fyne/v2/canvas"
+	"fyne.io/fyne/v2/layout"
 	"github.com/joshdk/preview"
 	"image/png"
 	"os"
@@ -9,23 +11,23 @@ import (
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
-	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
 	"github.com/hajimehoshi/go-mp3"
 	"github.com/hajimehoshi/oto/v2"
 )
 
-type Duckies struct {
-}
-
 /*
-go get -u github.com/joshdk/preview
+
 TODO: MVP - Small application that has a lake background picture, can click to hear duck noises, and also get pictures of a duck
 
-TODO: Install this library and add it so we can open up images DONE!
+TODO: DONE Install this library (go get -u github.com/joshdk/preview) and add it so we can open up images
+
 BONUS TODO: add multiple images and have the button cycle through them
+
+Sample code:
+
+
 import (
 	"image/jpeg"
 	"net/http"
@@ -105,41 +107,34 @@ func another() {
 
 /*
 
-TODO: create container layout using this format
-
-var := container --> with whatever layout you want
-
-	w.SetContent(var) to show container x1x1
+TODO: Find out how to layer containers, need one for background, another for the widgets
 
 */
 
 func main() {
 
-	var backgroundPicture = "/Users/aaron/code/gopher/duckgame"
-	background := canvas.NewImageFromFile(backgroundPicture)
-
 	a := app.New()
 	w := a.NewWindow("Happy Valentines Day!")
-	print(background)
-
-	// vday := canvas.NewText("Happy Valentines day", color.White)
-
-	//box1 := container.New(layout.NewVBoxLayout(), vday)
 
 	anotherOne := widget.Button{Text: "Give me another!", OnTapped: another}
 
 	relax := widget.Button{Text: "Feeling Stressed? Click me and close your eyes", OnTapped: tapped}
 
+	background := canvas.NewImageFromResource(resourceNewBackgroundPng)
+
+	//evilContainer := container.NewMax(&anotherOne, &relax, background)
+
 	container := container.NewGridWithColumns(3,
+		container.NewMax(background),
+		canvas.NewImageFromResource(resourceNewBackgroundPng),
 		layout.NewSpacer(),
-		container.NewHBox(&relax),
+		container.NewVBox(&relax, &anotherOne),
 		layout.NewSpacer(),
-		container.NewVBox(&anotherOne),
 	)
 
 	w.SetContent(container)
 
-	w.Resize(fyne.NewSize(500, 300))
+	w.Resize(fyne.NewSize(500, 500))
 	w.ShowAndRun()
 
 }
