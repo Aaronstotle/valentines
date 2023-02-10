@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"fyne.io/fyne/v2/canvas"
-	"fyne.io/fyne/v2/layout"
 	"github.com/joshdk/preview"
 	"image/png"
 	"os"
@@ -116,7 +115,7 @@ func main() {
 	a := app.New()
 	w := a.NewWindow("Happy Valentines Day!")
 
-	anotherOne := widget.Button{Text: "Give me another!", OnTapped: another}
+	anotherOne := widget.Button{Text: "Duck?", OnTapped: another}
 
 	relax := widget.Button{Text: "Feeling Stressed? Click me and close your eyes", OnTapped: tapped}
 
@@ -124,13 +123,11 @@ func main() {
 
 	//evilContainer := container.NewMax(&anotherOne, &relax, background)
 
-	container := container.NewGridWithColumns(3,
-		container.NewMax(background),
-		canvas.NewImageFromResource(resourceNewBackgroundPng),
-		layout.NewSpacer(),
-		container.NewVBox(&relax, &anotherOne),
-		layout.NewSpacer(),
-	)
+	container := container.NewMax(background,
+		container.NewGridWithColumns(2,
+			container.NewVBox(&anotherOne),
+			container.NewVBox(&relax),
+		))
 
 	w.SetContent(container)
 
