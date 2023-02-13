@@ -85,8 +85,9 @@ func check(e error) {
 	}
 }
 
-func readBackground() {
-	duckpng, _ := os.Open("/Users/aaron/code/gopher/duckgame/background.png")
+func giveDuck() {
+	// Create function that can read and present a number of different pictures in a folder, can
+	duckpng, _ := os.Open("/Users/aaron/code/gopher/duckgame/duck.png")
 	anotherimageFile, err := png.Decode(duckpng)
 	check(err)
 	preview.Image(anotherimageFile)
@@ -101,13 +102,12 @@ func tapped() {
 
 func another() {
 	fmt.Println("Duck time!")
-	readBackground()
+	giveDuck()
 }
 
 /*
 
 TODO: Find out how to layer containers, need one for background, another for the widgets
-
 */
 
 func main() {
