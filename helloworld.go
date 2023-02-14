@@ -6,6 +6,7 @@ import (
 	"github.com/joshdk/preview"
 	"image/png"
 	"os"
+	"path/filepath"
 	"time"
 
 	"fyne.io/fyne/v2"
@@ -86,11 +87,29 @@ func check(e error) {
 }
 
 func giveDuck() {
-	// Create function that can read and present a number of different pictures in a folder, can
-	duckpng, _ := os.Open("/Users/aaron/code/gopher/duckgame/duck.png")
-	anotherimageFile, err := png.Decode(duckpng)
-	check(err)
-	preview.Image(anotherimageFile)
+	// This function lists all images in a directoyr and prints them to the screen
+
+	err := filepath.Walk("/Users/aaron/code/gopher/duckgame/ducks/", func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			fmt.Println(err)
+			return err
+		}
+		fmt.Printf("dir: %v: name: %s\n", info.IsDir(), path)
+
+		if info.IsDir() != true {
+			duckpng, _ := os.Open(path)
+			anotherimageFile, err := png.Decode(duckpng)
+			check(err)
+			preview.Image(anotherimageFile)
+		}
+		if err != nil {
+			fmt.Println(err)
+		}
+		return nil
+	})
+	if err != nil {
+		fmt.Println(err)
+	}
 
 }
 
@@ -119,7 +138,7 @@ func main() {
 
 	relax := widget.Button{Text: "Feeling Stressed? Click me and close your eyes", OnTapped: tapped}
 
-	background := canvas.NewImageFromResource(resourceNewBackgroundPng)
+	background := canvas.NewImageFromResource(resourceBetterPng)
 
 	//evilContainer := container.NewMax(&anotherOne, &relax, background)
 
